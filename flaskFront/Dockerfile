@@ -1,4 +1,5 @@
 FROM python:3.11-alpine
+ARG BACKEND_URL
 WORKDIR /usr/src/app
 # Install envsubst (for placeholder replacement)
 RUN apk add --no-cache gettext

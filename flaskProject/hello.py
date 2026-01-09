@@ -1,8 +1,9 @@
-import requests,pycountry
+import requests,pycountry,os
 from flask import Flask, jsonify,request
 from flask_cors import CORS
 app = Flask(__name__)
-CORS(app)
+origins = os.environ.get("REQUEST_ORIGIN", "").split(",")
+CORS(app, origins=origins)
 @app.route('/')
 def hello_world():
    return 'Hello World'

@@ -3,7 +3,7 @@ WORKDIR /usr/src/app
 
 COPY data.html .
 
-ENV REACT_APP_BACKEND_URL=http://localhost:5000
-EXPOSE 3000
-# Start Python HTTP server
-CMD ["python", "-m", "http.server", "3000", "--bind", "0.0.0.0"]
+# No hardcoded ENV here—set REACT_APP_BACKEND_URL in Render dashboard
+EXPOSE $PORT  
+# Shell form to expand $PORT
+CMD ["sh", "-c", "python -m http.server $PORT --bind 0.0.0.0"]

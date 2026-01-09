@@ -1,3 +1,6 @@
 venv/
 .venv/
 flaskProject/venv/
+.git
+__pycache__
+*.pyc

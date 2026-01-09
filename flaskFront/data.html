@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Data Page</title>
+  </head>
+  <body>
+   <form>
+  <label for="name">Enter your name:</label>
+  <input type="text" id="name" value="Michael" />
+  <button type="button" id="getInfoBtn">Get Info</button>
+</form>
+
+<pre id="nameOutput"></pre>
+<pre id="ageOutput"></pre>
+<pre id="countryOutput"></pre>
+    
+    <h1>This is the Datas Page</h1>
+    <p>Here you can find some data.</p>
+    <div>
+      <img id="chart" />
+    </div>
+    <div>
+      <button id="load">Fetch Data from API</button>
+      <pre id="output"></pre>
+      <script>
+        document
+          .getElementById("getInfoBtn")
+          .addEventListener("click", async () => {
+            const name = document.getElementById("name").value
+
+            await fetchGenderData(name)
+            await fetchAgeData(name)
+            await fetchCountryData(name)
+          })
+      </script>
+      <script>
+        async function fetchData() {
+          try {
+            const url = "http://127.0.0.1:5000/data"
+            const response = await fetch(url)
+            const data = await response.json()
+
+            console.log("API Response:", data)
+            document.getElementById("output").textContent = JSON.stringify(
+              data,
+              null,
+              2
+            )
+          } catch (error) {
+            console.error("Error fetching data:", error)
+          }
+        }
+        document.getElementById("load").onclick = fetchData
+      </script>
+    </div>
+    
+      <pre id="nameOutput"></pre>
+      <script>
+        async function fetchGenderData(name) {
+          try {
+            //const name = document.getElementById("name").value
+            
+            const url =
+              "http://127.0.0.1:5000/api/gender?name=" +
+              encodeURIComponent(name)
+            const response = await fetch(url)
+            const data = await response.json()
+
+            console.log("API Response:", data)
+            document.getElementById("nameOutput").textContent = JSON.stringify(
+              data["gender"],
+              null,
+              2
+            )
+          } catch (error) {
+            console.error("Error fetching data:", error)
+          }
+        }
+      </script>
+    </div>
+    <div>
+      <script>
+        async function fetchAgeData(name) {
+          try {
+            //const name = document.getElementById("name").value
+            
+            const url =
+              "http://127.0.0.1:5000/api/age?name=" + encodeURIComponent(name)
+            const response = await fetch(url)
+            const data = await response.json()
+
+            console.log("API Response:", data)
+            document.getElementById("ageOutput").textContent = JSON.stringify(
+              data["age"],
+              null,
+              2
+            )
+          } catch (error) {
+            console.error("Error fetching data:", error)
+          }
+        }
+      </script>
+    </div>
+    <div>
+      <script>
+        async function fetchCountryData(name) {
+          try {
+            console.log(name, "4")
+            const url =
+              "http://127.0.0.1:5000/api/name?name=" + encodeURIComponent(name)
+            const response = await fetch(url)
+            const data = await response.json()
+            const country = data["country"] ??[]
+            const sliced = country.slice(0, 3) // Take first two countries
+            
+            console.log("API Response:", data)
+
+            document.getElementById("countryOutput").textContent =
+              JSON.stringify(sliced, null, 2)
+            showChart(sliced)
+          } catch (error) {
+            console.error("Error fetching data:", error)
+          }
+          
+        }
+        
+      </script>
+      <script>
+        async function codeToName(code) {
+          try {
+            const url =
+              "http://127.0.0.1:5000/api/country_code?code=" + encodeURIComponent(code)
+            const response = await fetch(url)
+            const data = await response.text()
+            console.log("Code1:", data)
+            return data
+        }catch (error) {
+            console.error("Error fetching data:", error)
+          }
+      }
+      </script>
+      <script>
+        async function showChart(sliced) {
+        const numba = sliced[0]["probability"] * 100
+        const numer = sliced[1]["probability"] * 100
+        const third = sliced[2]["probability"] * 100
+        const balance = 100 - (numba + numer + third)
+
+        const country_name1 =  await codeToName(sliced[0]["country_id"])
+        const country_name2 =  await codeToName(sliced[1]["country_id"])
+        const country_name3 =  await codeToName(sliced[2]["country_id"])
+
+        console.log(country_name1,"code2")
+        console.log(numba, numer,third)
+
+        const url = `https://image-charts.com/chart?cht=p3&chs=700x200&chd=t:${numba},${numer},${third},${balance}&chl=${country_name1}|${country_name2}|${country_name3}|Rest&chan&chf=ps0-0,lg,45,ffeb3b,0.2,f44336,1|ps0-1,lg,45,8bc34a,0.2,009688,1`
+        document.getElementById("chart").src = url
+        }
+        
+      </script>
+    </div>
+
+    
+  </body>
+</html>

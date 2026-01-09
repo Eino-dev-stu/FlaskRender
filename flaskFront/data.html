@@ -4,6 +4,10 @@
     <title>Data Page</title>
   </head>
   <body>
+    <script>
+      const BACKEND_URL = '${BACKEND_URL}'
+      //const backendUrl = '${REACT_APP_BACKEND_URL}'
+    </script>
    <form>
   <label for="name">Enter your name:</label>
   <input type="text" id="name" value="Michael" />
@@ -36,7 +40,7 @@
       <script>
         async function fetchData() {
           try {
-            const url = "http://127.0.0.1:5000/data"
+            const url = BACKEND_URL + "/api/data"
             const response = await fetch(url)
             const data = await response.json()
 
@@ -61,7 +65,7 @@
             //const name = document.getElementById("name").value
             
             const url =
-              "http://127.0.0.1:5000/api/gender?name=" +
+              BACKEND_URL + "/api/gender?name=" +
               encodeURIComponent(name)
             const response = await fetch(url)
             const data = await response.json()
@@ -85,7 +89,7 @@
             //const name = document.getElementById("name").value
             
             const url =
-              "http://127.0.0.1:5000/api/age?name=" + encodeURIComponent(name)
+              BACKEND_URL + "/api/age?name=" + encodeURIComponent(name)
             const response = await fetch(url)
             const data = await response.json()
 
@@ -107,7 +111,7 @@
           try {
             console.log(name, "4")
             const url =
-              "http://127.0.0.1:5000/api/name?name=" + encodeURIComponent(name)
+              BACKEND_URL + "/api/name?name=" + encodeURIComponent(name)
             const response = await fetch(url)
             const data = await response.json()
             const country = data["country"] ??[]
@@ -129,7 +133,7 @@
         async function codeToName(code) {
           try {
             const url =
-              "http://127.0.0.1:5000/api/country_code?code=" + encodeURIComponent(code)
+              BACKEND_URL + "/api/country_code?code=" + encodeURIComponent(code)
             const response = await fetch(url)
             const data = await response.text()
             console.log("Code1:", data)

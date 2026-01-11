@@ -17,15 +17,13 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # ---------- FRONTEND ----------
       - name: Build frontend Docker image
         run: |
-          docker build -t myapp-frontend ./front
+          docker build -t app-frontend ./flaskFront
 
-      # ---------- BACKEND ----------
       - name: Build backend Docker image
         run: |
-          docker build -t myapp-backend ./back
+          docker build -t app-backend ./flaskProject
 
       - name: CI success
         run: echo "Docker images built successfully"
